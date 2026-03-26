@@ -2,7 +2,7 @@ import { useState } from "react"
 
 import { useStorage } from "@plasmohq/storage/hook"
 
-import defaultSchools from "./schools.json" // On importe la liste pour l'afficher
+import defaultSchools from "./schools.json"
 
 function IndexPopup() {
   const [isFilterActive, setIsFilterActive] = useStorage("isFilterActive", true)
@@ -11,23 +11,18 @@ function IndexPopup() {
     []
   )
 
-  // Stockage des catégories
   const [filterBusiness, setFilterBusiness] = useStorage("filterBusiness", true)
   const [filterTech, setFilterTech] = useStorage("filterTech", true)
   const [filterOthers, setFilterOthers] = useStorage("filterOthers", true)
 
-  // NOUVEAU : Stockage des écoles par défaut décochées manuellement
   const [inactiveDefaults, setInactiveDefaults] = useStorage<string[]>(
     "inactiveDefaults",
     []
   )
 
-  // NOUVEAU : État local pour savoir quelle catégorie est déroulée (ouverte)
   const [expandedCats, setExpandedCats] = useState<Record<string, boolean>>({})
 
   const [newSchoolName, setNewSchoolName] = useState("")
-
-  // --- Fonctions logiques ---
 
   const handleAddCustomSchool = () => {
     const trimmedName = newSchoolName.trim()
@@ -49,15 +44,12 @@ function IndexPopup() {
 
   const handleToggleDefaultSchool = (school: string) => {
     if (inactiveDefaults.includes(school)) {
-      // Si elle était désactivée, on la retire de la liste des inactives (donc on la réactive)
       setInactiveDefaults(inactiveDefaults.filter((s) => s !== school))
     } else {
-      // Sinon, on l'ajoute aux inactives
       setInactiveDefaults([...inactiveDefaults, school])
     }
   }
 
-  // Configuration de nos catégories pour générer l'affichage facilement
   const categoriesConfig = [
     {
       id: "business_schools",
@@ -111,7 +103,7 @@ function IndexPopup() {
 
       <hr style={{ border: "0.5px solid #eee", marginBottom: 16 }} />
 
-      {/* Catégories par défaut (Déroulantes) */}
+      {/* Catégories par défaut */}
       <h3 style={{ fontSize: 14, marginTop: 0, color: "#555" }}>
         Catégories par défaut
       </h3>

@@ -4,14 +4,13 @@ import { Storage } from "@plasmohq/storage"
 
 import defaultSchools from "./schools.json"
 
-// On cible Indeed France et International
 export const config: PlasmoCSConfig = {
   matches: ["*://*.indeed.com/*", "*://*.indeed.fr/*"]
 }
 
 const storage = new Storage()
 
-// Fonction pour récupérer la liste noire finale
+// Fonction : liste noire finale (ecoles par défaut + ajoutées manuellement)
 async function getBlacklist() {
   const isGlobalActive = (await storage.get("isFilterActive")) ?? true
   if (!isGlobalActive) return []
@@ -26,7 +25,6 @@ async function getBlacklist() {
 
   let blacklist: string[] = [...customSchools]
 
-  // Pour chaque catégorie, on n'ajoute que les écoles qui ne sont pas dans "inactiveDefaults"
   if (filterBusiness) {
     blacklist.push(
       ...defaultSchools.categories.business_schools.filter(
@@ -52,18 +50,14 @@ async function getBlacklist() {
   return blacklist.map((school) => school.toLowerCase())
 }
 
-// Fonction qui parcours la page et masque les offres
 function hideJobCards(blacklist: string[]) {
   if (blacklist.length === 0) return
 
-  // Sur Indeed, chaque offre est généralement contenue dans une "div" avec la classe "job_seen_beacon"
   const jobCards = document.querySelectorAll(".job_seen_beacon")
 
   jobCards.forEach((card) => {
-    // Si on a déjà masqué cette carte, on passe à la suivante
     if (card.getAttribute("data-filtered") === "true") return
 
-    // On cherche l'élément contenant le nom de l'entreprise
     const companyNameElement = card.querySelector(
       '[data-testid="company-name"]'
     )
@@ -71,14 +65,13 @@ function hideJobCards(blacklist: string[]) {
     if (companyNameElement && companyNameElement.textContent) {
       const companyName = companyNameElement.textContent.toLowerCase()
 
-      // On vérifie si un mot de la blacklist est présent dans le nom de l'entreprise
+      // Vérification si nom de l'entreprise est dans la liste
       const isBanned = blacklist.some((school) => companyName.includes(school))
 
       if (isBanned) {
-        // C'est une école ! On masque l'offre complètement en CSS
+        // Masquage offre
         ;(card as HTMLElement).style.display = "none"
 
-        // On marque la carte pour ne pas la rescanner inutilement au prochain défilement
         card.setAttribute("data-filtered", "true")
 
         console.log(`🛡️ Job Filter: Offre masquée -> ${companyName}`)
@@ -87,22 +80,21 @@ function hideJobCards(blacklist: string[]) {
   })
 }
 
-// Initialisation au lancement de la page
+// Initialisation
 async function init() {
   const blacklist = await getBlacklist()
 
-  // 1er passage au chargement initial
+  // Filtrage au chargement de la page
   hideJobCards(blacklist)
 
-  // Comme Indeed charge les offres au fur et à mesure qu'on scrolle (sans recharger la page),
-  // On met un "observateur" qui relancera le filtre dès qu'il détecte de nouveaux éléments.
+  // Relancer le filtre quand les nouveaux éléments apparaissent
   const observer = new MutationObserver(() => {
     hideJobCards(blacklist)
   })
 
   observer.observe(document.body, { childList: true, subtree: true })
 
-  // Optionnel : Si on change un réglage dans le menu, on rafraîchit la page pour appliquer les modifications
+  // Refresh quand un réglage est modifié
   storage.watch({
     isFilterActive: () => window.location.reload(),
     filterBusiness: () => window.location.reload(),
