@@ -6,7 +6,11 @@
   "author": "Lucas Spitzer",
   "scripts": {
     "dev": "plasmo dev",
+    "dev:chrome": "plasmo dev --target=chrome-mv3",
+    "dev:firefox": "plasmo dev --target=firefox-mv3",
     "build": "plasmo build",
+    "build:chrome": "plasmo build --target=chrome-mv3",
+    "build:firefox": "plasmo build --target=firefox-mv3",
     "package": "plasmo package"
   },
   "dependencies": {
