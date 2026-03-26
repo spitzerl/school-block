@@ -1,7 +1,7 @@
 {
   "name": "school-block",
   "displayName": "School block",
-  "version": "0.0.1",
+  "version": "1.0.0",
   "description": "Une extension visant à masquer les publicitées agressives des écoles sur les sites d'offres d'emploi",
   "author": "Lucas Spitzer",
   "scripts": {
@@ -31,6 +31,17 @@
   "manifest": {
     "host_permissions": [
       "https://*/*"
-    ]
+    ],
+    "browser_specific_settings": {
+      "gecko": {
+        "id": "school-block@lucasspitzer.fr",
+        "strict_min_version": "140.0",
+        "data_collection_permissions": {
+          "required": [
+            "none"
+          ]
+        }
+      }
+    }
   }
 }
