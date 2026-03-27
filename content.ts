@@ -1,53 +1,49 @@
 import type { PlasmoCSConfig } from "plasmo"
+import { HelloWorkScraper } from "src/sites/hellowork"
+import { IndeedScraper } from "src/sites/indeed"
+import type { SiteScraper } from "src/types"
 
 import { Storage } from "@plasmohq/storage"
 
 import defaultSchools from "./schools.json"
 
 export const config: PlasmoCSConfig = {
-  matches: ["*://*.indeed.com/*", "*://*.indeed.fr/*"]
+  matches: ["*://*.indeed.com/*", "*://*.indeed.fr/*", "*://*.hellowork.com/*"]
 }
 
 const storage = new Storage()
+const scrapers: SiteScraper[] = [IndeedScraper, HelloWorkScraper]
 
 // Fonction : liste noire finale (ecoles par défaut + ajoutées manuellement)
-async function getBlacklist() {
+async function getBlacklist(): Promise<string[]> {
   const isGlobalActive = (await storage.get("isFilterActive")) ?? true
   if (!isGlobalActive) return []
 
-  const filterBusiness = (await storage.get("filterBusiness")) ?? true
-  const filterTech = (await storage.get("filterTech")) ?? true
-  const filterOthers = (await storage.get("filterOthers")) ?? true
-
-  const customSchools = (await storage.get<string[]>("customSchools")) || []
-  const inactiveDefaults =
-    (await storage.get<string[]>("inactiveDefaults")) || [] // NOUVEAU
+  const [
+    filterBusiness,
+    filterTech,
+    filterOthers,
+    customSchools,
+    inactiveDefaults
+  ] = await Promise.all([
+    storage.get("filterBusiness").then((v) => v ?? true),
+    storage.get("filterTech").then((v) => v ?? true),
+    storage.get("filterOthers").then((v) => v ?? true),
+    storage.get<string[]>("customSchools").then((v) => v || []),
+    storage.get<string[]>("inactiveDefaults").then((v) => v || [])
+  ])
 
   let blacklist: string[] = [...customSchools]
 
-  if (filterBusiness) {
-    blacklist.push(
-      ...defaultSchools.categories.business_schools.filter(
-        (s) => !inactiveDefaults.includes(s)
-      )
-    )
-  }
-  if (filterTech) {
-    blacklist.push(
-      ...defaultSchools.categories.tech_schools.filter(
-        (s) => !inactiveDefaults.includes(s)
-      )
-    )
-  }
-  if (filterOthers) {
-    blacklist.push(
-      ...defaultSchools.categories.others.filter(
-        (s) => !inactiveDefaults.includes(s)
-      )
-    )
+  const addCategory = (category: string[]) => {
+    blacklist.push(...category.filter((s) => !inactiveDefaults.includes(s)))
   }
 
-  return blacklist.map((school) => school.toLowerCase())
+  if (filterBusiness) addCategory(defaultSchools.categories.business_schools)
+  if (filterTech) addCategory(defaultSchools.categories.tech_schools)
+  if (filterOthers) addCategory(defaultSchools.categories.others)
+
+  return blacklist.map((s) => s.toLowerCase())
 }
 
 function hideJobCards(blacklist: string[]) {
@@ -65,11 +61,9 @@ function hideJobCards(blacklist: string[]) {
     if (companyNameElement && companyNameElement.textContent) {
       const companyName = companyNameElement.textContent.toLowerCase()
 
-      // Vérification si nom de l'entreprise est dans la liste
       const isBanned = blacklist.some((school) => companyName.includes(school))
 
       if (isBanned) {
-        // Masquage offre
         ;(card as HTMLElement).style.display = "none"
 
         card.setAttribute("data-filtered", "true")
@@ -80,21 +74,40 @@ function hideJobCards(blacklist: string[]) {
   })
 }
 
-// Initialisation
-async function init() {
-  const blacklist = await getBlacklist()
+function applyFilter(scraper: SiteScraper, blacklist: string[]) {
+  const cards = scraper.getJobCards()
 
-  // Filtrage au chargement de la page
-  hideJobCards(blacklist)
+  cards.forEach((card) => {
+    if (card.getAttribute("data-filtered") === "true") return
 
-  // Relancer le filtre quand les nouveaux éléments apparaissent
-  const observer = new MutationObserver(() => {
-    hideJobCards(blacklist)
+    const companyName = scraper.getCompanyName(card)?.toLowerCase()
+
+    if (companyName) {
+      const isBanned = blacklist.some((school) => companyName.includes(school))
+
+      if (isBanned) {
+        scraper.hideElement(card)
+        card.setAttribute("data-filtered", "true")
+        console.log(`🛡️ [${scraper.name}] Masqué : ${companyName}`)
+      }
+    }
   })
+}
 
+async function init() {
+  const currentUrl = window.location.href
+  const scraper = scrapers.find((s) => s.isCurrentSite(currentUrl))
+
+  if (!scraper) return
+
+  const blacklist = await getBlacklist()
+  if (blacklist.length === 0) return
+
+  applyFilter(scraper, blacklist)
+
+  const observer = new MutationObserver(() => applyFilter(scraper, blacklist))
   observer.observe(document.body, { childList: true, subtree: true })
 
-  // Refresh quand un réglage est modifié
   storage.watch({
     isFilterActive: () => window.location.reload(),
     filterBusiness: () => window.location.reload(),
