@@ -46,34 +46,6 @@ async function getBlacklist(): Promise<string[]> {
   return blacklist.map((s) => s.toLowerCase())
 }
 
-function hideJobCards(blacklist: string[]) {
-  if (blacklist.length === 0) return
-
-  const jobCards = document.querySelectorAll(".job_seen_beacon")
-
-  jobCards.forEach((card) => {
-    if (card.getAttribute("data-filtered") === "true") return
-
-    const companyNameElement = card.querySelector(
-      '[data-testid="company-name"]'
-    )
-
-    if (companyNameElement && companyNameElement.textContent) {
-      const companyName = companyNameElement.textContent.toLowerCase()
-
-      const isBanned = blacklist.some((school) => companyName.includes(school))
-
-      if (isBanned) {
-        ;(card as HTMLElement).style.display = "none"
-
-        card.setAttribute("data-filtered", "true")
-
-        console.log(`🛡️ Job Filter: Offre masquée -> ${companyName}`)
-      }
-    }
-  })
-}
-
 function applyFilter(scraper: SiteScraper, blacklist: string[]) {
   const cards = scraper.getJobCards()
 
