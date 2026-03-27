@@ -5,7 +5,7 @@ import type { SiteScraper } from "src/types"
 
 import { Storage } from "@plasmohq/storage"
 
-import defaultSchools from "./schools.json"
+import defaultSchools from "../schools.json"
 
 export const config: PlasmoCSConfig = {
   matches: ["*://*.indeed.com/*", "*://*.indeed.fr/*", "*://*.hellowork.com/*"]

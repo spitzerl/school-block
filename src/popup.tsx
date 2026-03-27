@@ -2,7 +2,7 @@ import { useState } from "react"
 
 import { useStorage } from "@plasmohq/storage/hook"
 
-import defaultSchools from "./schools.json"
+import defaultSchools from "../schools.json"
 
 function IndexPopup() {
   const [isFilterActive, setIsFilterActive] = useStorage("isFilterActive", true)
