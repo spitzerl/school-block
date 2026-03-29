@@ -2,9 +2,8 @@
 ![GitHub release (latest by date)](https://img.shields.io/github/v/release/spitzerl/school-block)
 ![GitHub issues](https://img.shields.io/github/issues/spitzerl/school-block)
 ![GitHub pull requests](https://img.shields.io/github/issues-pr/spitzerl/school-block)
-![GitHub License](https://img.shields.io/github/license/spitzerl/school-block)
 ![GitHub stars](https://img.shields.io/github/stars/spitzerl/school-block)
-![Firefox Browser](https://img.shields.io/badge/Firefox-Add--on-red?logo=firefox-browser)](https://addons.mozilla.org/fr/firefox/addon/school-block/)
+[![Firefox Browser](https://img.shields.io/badge/Firefox-Add--on-red?logo=firefox-browser)](https://addons.mozilla.org/fr/firefox/addon/school-block/)
 
 [Version Française](./README-fr.md)
 
