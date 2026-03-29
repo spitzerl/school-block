@@ -5,14 +5,24 @@ import { Storage } from "@plasmohq/storage"
 import defaultSchools from "../schools.json"
 import { HelloWorkScraper } from "./sites/hellowork"
 import { IndeedScraper } from "./sites/indeed"
+import { WelcomeToTheJungleScrapper } from "./sites/welcometothejungle"
 import type { SiteScraper } from "./types"
 
 export const config: PlasmoCSConfig = {
-  matches: ["*://*.indeed.com/*", "*://*.indeed.fr/*", "*://*.hellowork.com/*"]
+  matches: [
+    "*://*.indeed.com/*",
+    "*://*.indeed.fr/*",
+    "*://*.hellowork.com/*",
+    "*://*.welcometothejungle.com/*"
+  ]
 }
 
 const storage = new Storage()
-const scrapers: SiteScraper[] = [IndeedScraper, HelloWorkScraper]
+const scrapers: SiteScraper[] = [
+  IndeedScraper,
+  HelloWorkScraper,
+  WelcomeToTheJungleScrapper
+]
 
 // Fonction : liste noire finale (ecoles par défaut + ajoutées manuellement)
 async function getBlacklist(): Promise<string[]> {
