@@ -1,4 +1,10 @@
 # School Block - Masquez les publicités des écoles sur les sites de recherche d'emploi
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/spitzerl/school-block)](https://github.com/spitzerl/school-block/releases)
+[![GitHub issues](https://img.shields.io/github/issues/spitzerl/school-block)](https://github.com/spitzerl/school-block/issues) 
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/spitzerl/school-block)](https://github.com/spitzerl/school-block/pulls)
+[![GitHub license](https://img.shields.io/github/license/spitzerl/school-block)](https://github.com/spitzerl/school-block/blob/main/LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/spitzerl/school-block)](https://github.com/spitzerl/school-block/stargazers)
+[![Firefox Browser](https://img.shields.io/badge/Firefox-Add--on-red?logo=firefox-browser)](https://addons.mozilla.org/fr/firefox/addon/school-block/)
 
 [English version](./README.md)
 
