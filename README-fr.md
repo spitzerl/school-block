@@ -4,8 +4,6 @@
 
 **School Block** est une extension de navigateur (Chrome & Firefox) conçue pour assainir vos recherches d'emploi. Elle détecte et masque automatiquement les offres publiées par des écoles, des centres de formation ou des organismes de reconversion directement sur les plateformes de recrutement.
 
----
-
 ## ⚠️ Avertissement important
 
 Cette extension se base sur le **nom de l'entreprise** publié sur l'offre pour appliquer les filtres. Par conséquent :
@@ -14,14 +12,10 @@ Cette extension se base sur le **nom de l'entreprise** publié sur l'offre pour 
 * **Emplois internes masqués :** Si vous cherchez un emploi *au sein* d'une école (ex: informaticien pour le campus d'Epitech ou comptable pour HEC), ces offres seront également masquées par le filtre.
 * **Évolutions des sites :** L'extension lit la structure (HTML/CSS) des sites d'emploi. Si un site comme Indeed met à jour son interface, le filtre peut temporairement cesser de fonctionner le temps qu'une mise à jour soit déployée.
 
----
-
 ## Fonctionnalités
 
 * **Filtrage automatique :** Masquage instantané des offres d'écoles et centres de formation pré-enregistrés (possibilité de désactiver dans le menu de l'extension).
 * **Ajout manuel :** Ajoutez vos propres mots-clés ou écoles directement depuis le menu de l'extension.
-
----
 
 ## Sites d'emploi pris en charge
 
@@ -32,15 +26,11 @@ L'objectif est de couvrir les plateformes les plus polluées par ce type d'annon
 - [x] **HelloWork**
 - [ ] **LinkedIn** (À venir)
 
----
-
 ## Écoles filtrées par défaut
 
 L'extension maintient une liste exhaustive d'écoles de commerce, de bootcamps tech et d'organismes de formation en ligne.
 
 Pour consulter la liste complète des entités bloquées ou en suggérer une nouvelle, veuillez vous référer au fichier de configuration : **[schools.json](./schools.json)**
-
----
 
 ## Installation et Build local
 
@@ -66,8 +56,6 @@ Ce projet utilise [Plasmo](https://docs.plasmo.com/), Node.js et React.
 4.  **Compiler pour la production :**
     * `npm run build:chrome` ou `npm run build:firefox`
     * *L'extension compilée se trouvera dans le dossier `build/`.*
-
----
 
 ## Contribuer au projet
 
