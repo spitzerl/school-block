@@ -1,160 +1,72 @@
-# School Block - Masquer les écoles sur les sites d'emploi
+# School Block - Hide School Ads on Job Search Sites
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/spitzerl/school-block)](https://github.com/spitzerl/school-block/releases)
+[![GitHub issues](https://img.shields.io/github/issues/spitzerl/school-block)](https://github.com/spitzerl/school-block/issues) 
+[![GitHub pull requests](https://img.shields.io/github/issues-pr/spitzerl/school-block)](https://github.com/spitzerl/school-block/pulls)
+[![GitHub license](https://img.shields.io/github/license/spitzerl/school-block)](https://github.com/spitzerl/school-block/blob/main/LICENSE)
+[![GitHub stars](https://img.shields.io/github/stars/spitzerl/school-block)](https://github.com/spitzerl/school-block/stargazers)
+[![Firefox Browser](https://img.shields.io/badge/Firefox-Add--on-red?logo=firefox-browser)](https://addons.mozilla.org/fr/firefox/addon/school-block/)
 
-**School Block** est une extension de navigateur (Chrome & Firefox) conçue pour assainir vos recherches d'emploi. Elle détecte et masque automatiquement les offres publiées par des écoles, des centres de formation ou des organismes de reconversion (souvent pour de l'alternance ou des formations déguisées) sur les plateformes de recrutement.
+[Version Française](./README-fr.md)
 
-> ⚠️ **Avertissement important (À lire avant utilisation)**
-> Cette extension se base sur le nom de l'entreprise publié sur l'offre pour la masquer. Par conséquent :
-> * **Faux positifs :** Si une véritable entreprise possède un nom contenant celui d'une école (ex: "Studio 42" masqué à cause de l'école "42"), l'offre sera cachée.
-> * **Emplois internes masqués :** Si vous cherchez un emploi *au sein* d'une école (ex: informaticien pour le campus d'Epitech ou comptable pour HEC), ces offres seront également masquées par le filtre.
-> * **Évolutions des sites :** L'extension lit la structure (HTML/CSS) des sites d'emploi. Si un site comme Indeed met à jour son interface, le filtre peut temporairement cesser de fonctionner le temps qu'une mise à jour soit déployée.
+**School Block** is a browser extension (Chrome & Firefox) designed to clean up your job search. It automatically detects and hides listings posted by schools, training centers, or career change organizations directly on recruitment platforms.
 
----
+## ⚠️ Important Disclaimer
 
-## Fonctionnalités
+This extension relies on the **company name** published in the job offer to apply filters. Consequently:
 
-* **Filtrage automatique** des offres d'écoles pré-enregistrées.
-* **Menu interactif** pour activer/désactiver le filtre globalement ou par catégorie (Commerce, Tech, Autres).
-* **Liste blanche locale :** Désactivez spécifiquement une école de la liste par défaut si vous souhaitez voir ses offres.
-* **Ajout manuel :** Ajoutez vos propres mots-clés ou écoles directement depuis l'interface de l'extension.
-* Développé avec le framework **Plasmo** (React + TypeScript) et le standard **Manifest V3**.
+* **False Positives:** If a company's name contains a school's name (e.g., "Studio 42"), the offer will be hidden because of the "42" blacklist entry.
+* **Internal Positions Hidden:** If you are looking for a job *at* a school (e.g., IT technician for Epitech or accountant for HEC), these offers will also be hidden by the filter.
+* **Site Updates:** The extension reads the structure (HTML/CSS) of job boards. If a site like Indeed updates its interface, the filter may temporarily stop working until an update is deployed.
 
----
+## Features
 
-## Sites d'emploi pris en charge
+* **Automatic Filtering:** Instant hiding of pre-registered schools and training centers (can be disabled in the extension menu).
+* **Manual Additions:** Add your own keywords or schools directly from the extension menu.
 
-L'objectif est de couvrir les plateformes les plus polluées par ce type d'annonces.
+## Supported Job Boards
 
-- [x] **Indeed** (`indeed.com`, `indeed.fr`)
-- [ ] **Welcome to the Jungle** (À venir)
-- [ ] **LinkedIn** (À venir)
-- [ ] **HelloWork** (À venir)
-- [ ] **Glassdoor** (À venir)
+The goal is to cover the platforms most heavily affected by these types of ads.
 
----
+- [x] **Indeed**
+- [x] **Welcome to the Jungle**
+- [x] **HelloWork**
+- [ ] **LinkedIn** (Coming Soon)
 
-## Écoles filtrées par défaut
 
-<details>
-<summary><b>👉 Cliquez ici pour dérouler la liste complète des écoles prises en charge</b></summary>
+## Default Filtered Schools
 
-### Écoles de commerce & Management
-* Pigier
-* MBway
-* PPA Business School
-* INSEEC
-* ESG
-* IDRAC
-* Euridis
-* IFAG
-* ISG
-* IPAG
-* ICD
-* EBS
-* HEC
-* ESSEC
-* ESCP
-* EDHEC
-* EM Lyon
-* KEDGE
-* NEOMA
-* Skema
-* Audencia
-* Sup de Pub
-* EFAP
+The extension maintains an extensive list of business schools, tech bootcamps, and online training organizations.
 
-### Écoles Tech & Informatique
-* Epitech
-* 42
-* Supinfo
-* EPSI
-* CESI
-* HETIC
-* Webitech
-* IIM
-* Efrei
-* EPITA
-* ESIEE
-* Simplon
-* Le Wagon
-* O'clock
-* 3W Academy
-* Wild Code School
-* Doranco
-* M2i Formation
-* Rocket School
-* Ironhack
-* Holberton
+To view the full list of blocked entities or to suggest a new one, please refer to the configuration file: **[schools.json](./schools.json)**
 
-### Autres écoles & Formations en ligne
-* Studi
-* ISCOD
-* OpenClassrooms
-* MyDigitalSchool
-* Ynov
-* Ifocop
-* AFPA
-* Educatel
-* Centre Européen de Formation
-* L'École Française
-* Campus Sciences-U
-* ECITV
-* ICAN
-* Eductive
-* Comptalia
-* Nextformation
-* Skill and You
-* Icademie
+## Installation & Local Build
 
-</details>
+This project uses [Plasmo](https://docs.plasmo.com/), Node.js, and React.
 
----
+### Prerequisites
+* **Node.js** (v16 or higher)
+* **npm**, **pnpm**, or **yarn**
 
-## Installation et Build local
-
-Ce projet utilise [Plasmo](https://docs.plasmo.com/), Node.js et React.
-
-### Prérequis
-* Node.js (version 16 ou supérieure)
-* npm, pnpm ou yarn
-
-### Étapes
-1. **Cloner le dépôt :**
-    
-    git clone https://github.com/spitzerl/school-block.git
+### Steps
+1.  **Clone the repository:**
+    ```bash
+    git clone [https://github.com/spitzerl/school-block.git](https://github.com/spitzerl/school-block.git)
     cd school-block
-    
-2. **Installer les dépendances :**
-    
+    ```
+2.  **Install dependencies:**
+    ```bash
     npm install
-    
-3. **Lancer le serveur de développement (Hot Reload) :**
-    * Pour Chrome / Chromium : npm run dev:chrome
-    * Pour Firefox : npm run dev:firefox *(Note : Firefox bloque l'exécution de React en dev mode local à cause des règles CSP strictes. Préférez Chrome pour le développement).*
+    ```
+3.  **Run the development server (Hot Reload):**
+    * **Chrome / Chromium:** `npm run dev:chrome`
+    * **Firefox:** `npm run dev:firefox`
+4.  **Build for production:**
+    * `npm run build:chrome` or `npm run build:firefox`
+    * *The compiled extension will be found in the `build/` folder.*
 
-4. **Compiler pour la production :**
-    * Pour Chrome : npm run build:chrome
-    * Pour Firefox : npm run build:firefox
+## Contributing
 
-    *L'extension compilée se trouvera dans le dossier build/.*
+Contributions are welcome! Whether you want to add new schools to the list or fix a site filter that no longer works, feel free to get involved.
 
----
-
-## Contribuer au projet
-
-Les contributions sont les bienvenues, que ce soit pour ajouter de nouvelles écoles qui spamment les plateformes, ou pour maintenir les scripts de filtrage !
-
-### Ajouter de nouvelles écoles
-1. Ouvrez le fichier schools.json à la racine du projet.
-2. Ajoutez le nom de l'école dans la catégorie appropriée (business_schools, tech_schools, ou others).
-3. **Attention :** Soyez le plus spécifique possible pour éviter les faux positifs (ex: préférez "École Webitech" à juste "Web").
-4. Soumettez une *Pull Request*.
-
-### Ajouter ou corriger un site d'emploi
-Le cœur du filtrage se trouve dans content.ts. Si un site change son interface HTML ou si vous souhaitez ajouter un nouveau site :
-1. Modifiez la variable config.matches en haut de content.ts pour inclure l'URL du nouveau site.
-2. Adaptez la fonction hideJobCards() pour cibler les bons sélecteurs DOM du site visé (ex: document.querySelectorAll('.nouvelle-classe-de-carte')).
-3. Veillez à utiliser des sélecteurs stables (comme les data-testid ou aria-labels plutôt que des classes CSS générées dynamiquement).
-4. Testez en local avec le Scroll Infini du site (via le MutationObserver).
-5. Soumettez votre *Pull Request* en détaillant les modifications.
-
-PS: si vous ne vous sentez pas de modifier le code, ouvrez juste une issue en détaillant le problème, je me chargerais du reste ;-)
+> [!TIP]
+> Not comfortable with code? Simply open an **issue** detailing the missing school or the site that is causing problems, and I'll take care of it!
